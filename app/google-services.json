@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "485026232083",
+    "project_id": "comp7506-mobile-app",
+    "storage_bucket": "comp7506-mobile-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:485026232083:android:40e5b59aa7355ecc2ecce6",
+        "android_client_info": {
+          "package_name": "cs.hku.comp7506"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "485026232083-n2f3opuu88ovq39umvimqinlfqffu4fj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgdHrUEFbspe77GP-9ZYfSzxbK1M3mdIs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "485026232083-n2f3opuu88ovq39umvimqinlfqffu4fj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
