@@ -14,8 +14,9 @@ import kotlinx.coroutines.launch
 class HomeViewModel(val feedRepository: FeedRepository) : ViewModel() {
 
     private val _feed = MutableLiveData<LoadState<List<Feed>>>()
-
     val feed: LiveData<LoadState<List<Feed>>> = _feed
+    private val _title = MutableLiveData<String>()
+    val title:LiveData<String> = _title
     private var loadFeedJob:Job? = null
 
     init {

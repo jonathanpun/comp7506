@@ -69,6 +69,10 @@ class HomeFragment : Fragment() {
         homeViewModel.feed.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it.convertToFeedDisplayModel())
         })
+        homeViewModel.title.observe(viewLifecycleOwner){
+            binding.collapsingToolbarLayout.title = it
+            binding.toolbar.title = it
+        }
         return root
     }
 
