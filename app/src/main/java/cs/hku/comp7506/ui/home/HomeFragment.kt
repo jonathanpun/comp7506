@@ -8,8 +8,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import cs.hku.comp7506.R
 import cs.hku.comp7506.adapter.FeedAdapter
+import cs.hku.comp7506.adapter.convertToFeedDisplayModel
 import cs.hku.comp7506.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -33,10 +35,11 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
         binding.apply {
             recyclerview.adapter = adapter
+            recyclerview.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         }
 
         homeViewModel.feed.observe(viewLifecycleOwner, Observer {
-            print(it.toString())
+            adapter.submitList(it.convertToFeedDisplayModel())
         })
         return root
     }

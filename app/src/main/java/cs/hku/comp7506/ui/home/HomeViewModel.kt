@@ -6,17 +6,33 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cs.hku.comp7506.model.Feed
 import cs.hku.comp7506.repository.FeedRepository
+import cs.hku.comp7506.util.LoadState
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 class HomeViewModel(val feedRepository: FeedRepository) : ViewModel() {
 
+    private val _feed = MutableLiveData<LoadState<List<Feed>>>()
+
+    val feed: LiveData<LoadState<List<Feed>>> = _feed
+    private var loadFeedJob:Job? = null
+
     init {
-        viewModelScope.launch {
-            _feed.value= feedRepository.getFeed()
-        }
+        loadMoreFeed()
     }
 
-    private val _feed = MutableLiveData<List<Feed>>()
-    val feed: LiveData<List<Feed>> = _feed
+
+    fun loadMoreFeed(){
+        if (loadFeedJob !=null)
+            return
+        loadFeedJob = viewModelScope.launch {
+            _feed.value = LoadState.Loading(_feed.value?.data?: emptyList())
+            val feed = feedRepository.getFeed()?.first()
+            _feed.value = LoadState.Success(_feed.value?.data?.toMutableList()?.apply {
+                feed?.let { add(it) }
+            } as List<Feed>)
+            loadFeedJob = null
+        }
+    }
 }
