@@ -20,4 +20,6 @@ fun LoadState<List<Feed>>.convertToFeedDisplayModel():List<FeedDisplayModel>{
 fun Feed.toFeedDisplayModel():FeedDisplayModel.FeedDisplay =
     FeedDisplayModel.FeedDisplay(id= this.id,
         timeString = this.date,
-    contentString = this.content)
+    contentString = this.content,
+        poiString = this.poi?.name,
+    feed = this)

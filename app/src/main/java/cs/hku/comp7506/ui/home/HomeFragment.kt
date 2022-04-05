@@ -1,5 +1,7 @@
 package cs.hku.comp7506.ui.home
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +20,32 @@ class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
-    private val adapter = FeedAdapter()
+    private val adapter = FeedAdapter().apply {
+        onPlaceClicked = fun(displayModel){
+            if ( displayModel.feed.geoPoint==null)
+                return
+            // Create a Uri from an intent string. Use the result to create an Intent.
+            val gmmIntentUri = Uri.parse("geo:${displayModel.feed.geoPoint.latitude},${displayModel.feed.geoPoint.longitude}?q=${displayModel.feed.geoPoint.latitude},${displayModel.feed.geoPoint.longitude}")
+            // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            // Make the Intent explicit by setting the Google Maps package
+            mapIntent.setPackage("com.google.android.apps.maps")
+            // Attempt to start an activity that can handle the Intent
+            startActivity(mapIntent)
+        }
+        onPoiClicked = fun(displayModel){
+            if ( displayModel.feed.poi==null)
+                return
+            // Create a Uri from an intent string. Use the result to create an Intent.
+            val gmmIntentUri = Uri.parse("geo:0,0?q=${displayModel.feed.poi.geoPoint.latitude},${displayModel.feed.poi.geoPoint.longitude}(${displayModel.feed.poi.name})")
+            // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            // Make the Intent explicit by setting the Google Maps package
+            mapIntent.setPackage("com.google.android.apps.maps")
+            // Attempt to start an activity that can handle the Intent
+            startActivity(mapIntent)
+        }
+    }
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -30,12 +57,13 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         homeViewModel =
-            ViewModelProvider(this,HomeViewModelFactory()).get(HomeViewModel::class.java)
+            ViewModelProvider(this, HomeViewModelFactory()).get(HomeViewModel::class.java)
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
         binding.apply {
             recyclerview.adapter = adapter
-            recyclerview.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+            recyclerview.layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         }
 
         homeViewModel.feed.observe(viewLifecycleOwner, Observer {
