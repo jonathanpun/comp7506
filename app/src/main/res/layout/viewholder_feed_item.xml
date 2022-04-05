@@ -48,20 +48,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/textview_time" />
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageview_image_1"
+        app:shapeAppearanceOverlay="@style/customRoundedImageView"
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toStartOf="@+id/imageview_image_2"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview_content"
-        android:scaleType="centerCrop"/>
+        app:layout_constraintTop_toBottomOf="@id/textview_content" />
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
+        app:shapeAppearanceOverlay="@style/customRoundedImageView"
         android:id="@+id/imageview_image_2"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -73,7 +75,8 @@
         app:layout_constraintTop_toTopOf="@+id/imageview_image_1"
         android:scaleType="centerCrop"/>
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
+        app:shapeAppearanceOverlay="@style/customRoundedImageView"
         android:id="@+id/imageview_image_3"
         android:layout_width="0dp"
         android:layout_height="0dp"

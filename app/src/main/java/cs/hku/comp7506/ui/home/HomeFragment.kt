@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import cs.hku.comp7506.R
 import cs.hku.comp7506.adapter.FeedAdapter
@@ -72,6 +73,9 @@ class HomeFragment : Fragment() {
         homeViewModel.title.observe(viewLifecycleOwner){
             binding.collapsingToolbarLayout.title = it
             binding.toolbar.title = it
+        }
+        binding.fab.setOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionNavigationHomeToCreateFragment())
         }
         return root
     }

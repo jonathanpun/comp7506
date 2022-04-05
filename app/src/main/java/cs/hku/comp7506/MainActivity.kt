@@ -1,6 +1,7 @@
 package cs.hku.comp7506
 
 import android.os.Bundle
+import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -8,6 +9,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import cs.hku.comp7506.databinding.ActivityMainBinding
+import cs.hku.comp7506.ui.create.CreateFragment
+import cs.hku.comp7506.ui.home.HomeFragmentDirections
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,5 +33,12 @@ class MainActivity : AppCompatActivity() {
             )
         )
         navView.setupWithNavController(navController)
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            navView.visibility = when(destination.id){
+                R.id.createFragment->View.GONE
+                else->View.VISIBLE
+            }
+
+        }
     }
 }
