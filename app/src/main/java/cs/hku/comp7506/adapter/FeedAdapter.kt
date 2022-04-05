@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import cs.hku.comp7506.databinding.ViewholderFeedItemBinding
 import cs.hku.comp7506.databinding.ViewholderLoadingBinding
 import cs.hku.comp7506.model.Feed
@@ -48,12 +49,22 @@ class FeedAdapter:ListAdapter<FeedDisplayModel,RecyclerView.ViewHolder>(FeedDiff
                 }else{
                     holder.binding.imageviewPlace.setOnClickListener { onPlaceClicked?.invoke(feedDisplay) }
                 }
-
+                holder.images.forEachIndexed { index, imageView ->
+                    val image = data.feed.images.getOrNull(index)
+                    if (!image.isNullOrEmpty()){
+                        imageView.visibility = View.VISIBLE
+                        Glide.with(imageView).load(image).into(imageView)
+                    }else{
+                        imageView.visibility =View.GONE
+                    }
+                }
             }
         }
     }
 
-    class FeedViewHolder(val binding:ViewholderFeedItemBinding):RecyclerView.ViewHolder(binding.root)
+    class FeedViewHolder(val binding:ViewholderFeedItemBinding):RecyclerView.ViewHolder(binding.root){
+        val images = listOf(binding.imageviewImage1,binding.imageviewImage2,binding.imageviewImage3)
+    }
     class LoadingViewHolder(val binding:ViewholderLoadingBinding):RecyclerView.ViewHolder(binding.root)
 
     class FeedDiffUtil:DiffUtil.ItemCallback<FeedDisplayModel>(){

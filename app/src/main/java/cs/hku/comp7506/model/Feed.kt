@@ -8,5 +8,5 @@ data class Feed(
     val content:String,
     val geoPoint:GeoPoint?,
     val poi:Poi?,
-    val images:Array<String>
+    val images:List<String>
 )
