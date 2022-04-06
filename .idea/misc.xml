@@ -4,10 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../layout/custom_preview.xml" value="0.3484375" />
+        <entry key="app/src/main/res/drawable/baseline_add_black_24dp.xml" value="0.19947916666666668" />
+        <entry key="app/src/main/res/drawable/baseline_add_circle_outline_black_24dp.xml" value="0.19947916666666668" />
         <entry key="app/src/main/res/drawable/bg_add_images.xml" value="0.375" />
+        <entry key="app/src/main/res/drawable/edit_text_bg.xml" value="0.19947916666666668" />
         <entry key="app/src/main/res/drawable/ic_close.xml" value="0.1828125" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_create.xml" value="0.254601226993865" />
+        <entry key="app/src/main/res/layout/fragment_create.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.19697693418529336" />
         <entry key="app/src/main/res/layout/viewholder_feed_item.xml" value="0.42166344294003866" />
         <entry key="app/src/main/res/layout/viewholder_loading.xml" value="0.1381340579710145" />
