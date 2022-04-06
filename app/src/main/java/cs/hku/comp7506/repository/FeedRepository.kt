@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.core.net.toFile
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.ktx.Firebase
@@ -35,16 +36,21 @@ class FeedRepository(private val contentResolver: ContentResolver) {
         //fn.useEmulator("10.0.2.2", 5001);
     }
     suspend fun getFeed(): List<Feed>? {
-        val document = getFeedDocument()
-        val poi = document.getString("poi_id")?.let { getPoi(it) }
-        return FeedConverter.fromSnapShot(document, poi = poi)?.let { listOf(it) }
+        return getFeedDocument().mapNotNull {
+            if (it == null)
+                return null
+            val poi = it.getString("poi_id")?.let { getPoi(it) }
+            FeedConverter.fromSnapShot(it, poi = poi)
+        }
     }
 
-    suspend fun getFeedDocument(): DocumentSnapshot = suspendCoroutine { cont ->
-        db.collection("feed").get()
+    suspend fun getFeedDocument(): List<DocumentSnapshot?> = suspendCoroutine { cont ->
+        db.collection("feed").orderBy("time", Query.Direction.DESCENDING)
+            .limit(10)
+            .get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    cont.resume(document.first())
+                    cont.resume(document.documents)
                 }
             }.addOnFailureListener {
                 it.printStackTrace()

@@ -29,9 +29,9 @@ class HomeViewModel(val feedRepository: FeedRepository) : ViewModel() {
             return
         loadFeedJob = viewModelScope.launch {
             _feed.value = LoadState.Loading(_feed.value?.data?: emptyList())
-            val feed = feedRepository.getFeed()?.first()
+            val feed = feedRepository.getFeed()
             _feed.value = LoadState.Success(_feed.value?.data?.toMutableList()?.apply {
-                feed?.let { add(it) }
+                feed?.let { addAll(it) }
             } as List<Feed>)
             loadFeedJob = null
         }
