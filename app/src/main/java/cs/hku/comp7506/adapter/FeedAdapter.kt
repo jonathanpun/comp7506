@@ -29,10 +29,22 @@ class FeedAdapter:ListAdapter<FeedDisplayModel,RecyclerView.ViewHolder>(FeedDiff
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when(viewType){
-            VIEW_TYPE_FEED-> FeedViewHolder( ViewholderFeedItemBinding.inflate(LayoutInflater.from(parent.context)))
-            VIEW_TYPE_LOADING->LoadingViewHolder(ViewholderLoadingBinding.inflate(LayoutInflater.from(parent.context)))
-            else->throw Exception()
+        return when (viewType) {
+            VIEW_TYPE_FEED -> FeedViewHolder(
+                ViewholderFeedItemBinding.inflate(
+                    LayoutInflater.from(
+                        parent.context
+                    ), parent, false
+                )
+            )
+            VIEW_TYPE_LOADING -> LoadingViewHolder(
+                ViewholderLoadingBinding.inflate(
+                    LayoutInflater.from(
+                        parent.context
+                    ), parent, false
+                )
+            )
+            else -> throw Exception()
         }
     }
 

@@ -20,6 +20,7 @@ import cs.hku.comp7506.databinding.FragmentCreateBinding
 import cs.hku.comp7506.util.NavDirection
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.collect
+import java.math.RoundingMode
 
 class CreateFragment:Fragment() {
     private var _binding:FragmentCreateBinding? = null
@@ -82,7 +83,9 @@ class CreateFragment:Fragment() {
             binding.layoutAddDescription.visibility= if(it.isEmpty())View.VISIBLE else View.GONE
         })
         vm.poi.observe(viewLifecycleOwner, Observer {
-            binding.textviewLocation.text= "${it?.poi?.name}, ${it?.dist}m away"
+            binding.textviewLocation.text = "${it?.poi?.name}, ${
+                it?.dist?.toBigDecimal()?.setScale(2, RoundingMode.HALF_UP)?.toPlainString()
+            }m away"
         })
         vm.submitButton.observe(viewLifecycleOwner){
             binding.buttonCreate.isEnabled=it
@@ -94,6 +97,9 @@ class CreateFragment:Fragment() {
             vm.navFlow.collect {
                 when(it){
                     is NavDirection.Back->{
+                        activity?.let {
+                            Toast.makeText(it, "Report Created", Toast.LENGTH_SHORT).show()
+                        }
                         activity?.onBackPressed()
                     }
                 }

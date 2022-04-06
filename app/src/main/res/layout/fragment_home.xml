@@ -19,14 +19,18 @@
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginStart="24dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-          >
+            app:collapsedTitleTextColor="?attr/titleColor"
+            app:expandedTitleTextColor="?attr/titleColor"
+            app:titleTextColor="?attr/titleColor">
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                />
+                app:subtitleTextColor="?attr/titleColor"
+                app:titleTextColor="?attr/titleColor" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
     <androidx.recyclerview.widget.RecyclerView

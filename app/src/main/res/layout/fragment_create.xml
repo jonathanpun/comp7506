@@ -23,7 +23,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Images"
-        />
+        android:textColor="?attr/textColor"
+        android:textSize="18dp" />
     <androidx.constraintlayout.widget.ConstraintLayout
         app:layout_constraintTop_toBottomOf="@id/textview_1"
         android:id="@+id/layout_add_image"
@@ -52,15 +53,16 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/text_view"
-                android:text="add image, 3 max"
+                android:text="Add image, 3 max"
+                android:textColor="@color/grey"
                 app:layout_constraintTop_toBottomOf="@id/imageview"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
+                app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -175,11 +177,14 @@
         android:id="@+id/textview_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="location"
+        android:text="Nearest Location"
+        android:textColor="?attr/textColor"
+        android:textSize="18dp"
         app:layout_constraintTop_toBottomOf="@id/layout_add_image"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"/>
+        android:layout_marginStart="16dp" />
+
     <TextView
         android:id="@+id/textview_location"
         android:layout_width="match_parent"
@@ -187,7 +192,10 @@
         app:layout_constraintTop_toBottomOf="@id/textview_2"
         android:layout_marginHorizontal="16dp"
         android:gravity="center"
-        android:layout_marginTop="16dp"/>
+        android:textColor="?attr/textColor"
+        android:textSize="18dp"
+        android:layout_marginTop="16dp" />
+
     <TextView
         android:id="@+id/textview_3"
         android:layout_width="wrap_content"
@@ -196,9 +204,12 @@
         app:layout_constraintTop_toBottomOf="@id/textview_location"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Content"
-        />
+        android:textColor="?attr/textColor"
+        android:textSize="18dp"
+        android:text="Content" />
+
     <EditText
+        android:layout_height="100dp"
         app:layout_constraintTop_toBottomOf="@id/textview_3"
         android:layout_marginTop="16dp"
         android:layout_marginHorizontal="16dp"
@@ -206,16 +217,24 @@
         android:layout_width="match_parent"
         android:background="@drawable/edit_text_bg"
         android:text="@={viewmodel.content}"
-        android:layout_height="40dp"/>
+        android:gravity="top|start"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:padding="4dp"
+        tools:text="123" />
 
-    <ImageView
+    <TextView
         android:id="@+id/button_create"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginBottom="40dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="Submit"
+        android:textColor="@color/white"
+        android:textSize="16dp"
         android:layout_marginHorizontal="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@drawable/bg_button_create"/>
+        android:background="@drawable/bg_button_create" />
 
 
 

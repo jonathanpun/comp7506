@@ -70,9 +70,13 @@ class HomeFragment : Fragment() {
         homeViewModel.feed.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it.convertToFeedDisplayModel())
         })
-        homeViewModel.title.observe(viewLifecycleOwner){
+        homeViewModel.title.observe(viewLifecycleOwner) {
             binding.collapsingToolbarLayout.title = it
             binding.toolbar.title = it
+        }
+        homeViewModel.title.observe(viewLifecycleOwner){
+            binding.toolbar.title=it
+            binding.collapsingToolbarLayout.title=it
         }
         binding.fab.setOnClickListener {
             findNavController().navigate(HomeFragmentDirections.actionNavigationHomeToCreateFragment())

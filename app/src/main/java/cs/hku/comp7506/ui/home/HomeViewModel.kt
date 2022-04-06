@@ -11,16 +11,20 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
-class HomeViewModel(val feedRepository: FeedRepository) : ViewModel() {
+class HomeViewModel(val feedRepository: FeedRepository, val type: String = "main") : ViewModel() {
 
     private val _feed = MutableLiveData<LoadState<List<Feed>>>()
     val feed: LiveData<LoadState<List<Feed>>> = _feed
     private val _title = MutableLiveData<String>()
-    val title:LiveData<String> = _title
-    private var loadFeedJob:Job? = null
+    val title: LiveData<String> = _title
+    private var loadFeedJob: Job? = null
 
     init {
         loadMoreFeed()
+        _title.value = when (type) {
+            "main" -> "#Latest feed"
+            else -> ""
+        }
     }
 
 
