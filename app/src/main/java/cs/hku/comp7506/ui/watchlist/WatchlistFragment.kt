@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -45,8 +47,11 @@ class WatchlistFragment:Fragment() {
         val l = vm.uiState.collectAsState(initial = emptyList())
         Column(modifier= Modifier.width(IntrinsicSize.Max)) {
             l.value.forEach { watchlist ->
-                Box(Modifier.fillMaxWidth()){
-
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 16.dp)){
+                    Text(text = watchlist,fontSize=24.sp)
                 }
             }
         }
