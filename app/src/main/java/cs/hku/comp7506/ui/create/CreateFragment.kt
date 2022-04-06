@@ -2,8 +2,6 @@ package cs.hku.comp7506.ui.create
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.net.Uri
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,16 +15,17 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
 import cs.hku.comp7506.databinding.FragmentCreateBinding
-import cs.hku.comp7506.databinding.FragmentHomeBinding
+import cs.hku.comp7506.util.NavDirection
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.collect
 
 class CreateFragment:Fragment() {
     private var _binding:FragmentCreateBinding? = null
     private val binding:FragmentCreateBinding
         get() = _binding!!
-    private val vm: CreateViewModel by viewModels()
+    private val vm: CreateViewModel by viewModels(factoryProducer = {CreateViewModelFactory(requireActivity().contentResolver)})
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     val content = registerForActivityResult(ActivityResultContracts.GetMultipleContents()) {
         vm.addImage(it)
@@ -59,6 +58,7 @@ class CreateFragment:Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCreateBinding.inflate(inflater)
+        _binding?.viewmodel = vm
         binding.layoutAddDescription.setOnClickListener {
             content.launch("image/*")
         }
@@ -81,6 +81,24 @@ class CreateFragment:Fragment() {
             }
             binding.layoutAddDescription.visibility= if(it.isEmpty())View.VISIBLE else View.GONE
         })
+        vm.poi.observe(viewLifecycleOwner, Observer {
+            binding.textviewLocation.text= "${it?.poi?.name}, ${it?.dist}m away"
+        })
+        vm.submitButton.observe(viewLifecycleOwner){
+            binding.buttonCreate.isEnabled=it
+        }
+        binding.buttonCreate.setOnClickListener {
+            vm.createPost()
+        }
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            vm.navFlow.collect {
+                when(it){
+                    is NavDirection.Back->{
+                        activity?.onBackPressed()
+                    }
+                }
+            }
+        }
         requestLocation()
         return binding.root
     }
@@ -98,7 +116,7 @@ class CreateFragment:Fragment() {
     @SuppressLint("MissingPermission")
     private fun getLocation(){
           fusedLocationClient.getCurrentLocation(PRIORITY_BALANCED_POWER_ACCURACY,CancellationTokenSource().token).addOnSuccessListener {
-                print(it)
+                vm.setLocation(it.latitude,it.longitude)
             }
     }
 }

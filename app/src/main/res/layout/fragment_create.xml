@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<layout >
+    <data>
+        <variable
+            name="viewmodel"
+            type="cs.hku.comp7506.ui.create.CreateViewModel" />
+    </data>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
 
     <TextView
         app:layout_constraintTop_toTopOf="parent"
@@ -177,6 +186,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/textview_2"
         android:layout_marginHorizontal="16dp"
+        android:gravity="center"
         android:layout_marginTop="16dp"/>
     <TextView
         android:id="@+id/textview_3"
@@ -195,8 +205,20 @@
         android:id="@+id/edit_textview_content"
         android:layout_width="match_parent"
         android:background="@drawable/edit_text_bg"
+        android:text="@={viewmodel.content}"
         android:layout_height="40dp"/>
+
+    <ImageView
+        android:id="@+id/button_create"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/bg_button_create"/>
+
 
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

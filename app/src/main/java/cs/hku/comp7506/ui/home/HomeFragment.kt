@@ -58,7 +58,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         homeViewModel =
-            ViewModelProvider(this, HomeViewModelFactory()).get(HomeViewModel::class.java)
+            ViewModelProvider(this, HomeViewModelFactory(contentResolver = requireActivity().contentResolver)).get(HomeViewModel::class.java)
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
         binding.apply {
