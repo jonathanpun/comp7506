@@ -30,9 +30,9 @@ class MainActivity : AppCompatActivity() {
 
         navView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            navView.visibility = when(destination.id){
-                R.id.createFragment,R.id.entryFragment ->View.GONE
-                else->View.VISIBLE
+            navView.visibility = when (destination.id) {
+                R.id.navigation_home, R.id.navigation_watchlist -> View.VISIBLE
+                else -> View.GONE
             }
 
         }

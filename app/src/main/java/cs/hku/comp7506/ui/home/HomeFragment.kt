@@ -35,8 +35,10 @@ class HomeFragment : Fragment() {
             startActivity(mapIntent)
         }
         onPoiClicked = fun(displayModel){
-            if ( displayModel.feed.poi==null)
+            if (displayModel.feed.poi==null)
                 return
+            findNavController().navigate(HomeFragmentDirections.actionNavigationHomeToPoiFragment(displayModel.feed.poi))
+            /**
             // Create a Uri from an intent string. Use the result to create an Intent.
             val gmmIntentUri = Uri.parse("geo:0,0?q=${displayModel.feed.poi.geoPoint.latitude},${displayModel.feed.poi.geoPoint.longitude}(${displayModel.feed.poi.name})")
             // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
@@ -44,7 +46,7 @@ class HomeFragment : Fragment() {
             // Make the Intent explicit by setting the Google Maps package
             mapIntent.setPackage("com.google.android.apps.maps")
             // Attempt to start an activity that can handle the Intent
-            startActivity(mapIntent)
+            startActivity(mapIntent)**/
         }
     }
 
@@ -57,8 +59,9 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val args = arguments?.let {  HomeFragmentArgs.fromBundle(it)}
         homeViewModel =
-            ViewModelProvider(this, HomeViewModelFactory(contentResolver = requireActivity().contentResolver)).get(HomeViewModel::class.java)
+            ViewModelProvider(this, HomeViewModelFactory(contentResolver = requireActivity().contentResolver, poi = args?.poi)).get(HomeViewModel::class.java)
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
         binding.apply {
@@ -77,6 +80,9 @@ class HomeFragment : Fragment() {
         homeViewModel.title.observe(viewLifecycleOwner){
             binding.toolbar.title=it
             binding.collapsingToolbarLayout.title=it
+        }
+        homeViewModel.addVisibility.observe(viewLifecycleOwner){
+            binding.fab.visibility = if (it)View.VISIBLE else View.GONE
         }
         binding.fab.setOnClickListener {
             findNavController().navigate(HomeFragmentDirections.actionNavigationHomeToCreateFragment())

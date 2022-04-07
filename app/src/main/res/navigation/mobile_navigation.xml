@@ -9,12 +9,28 @@
         android:id="@+id/navigation_home"
         android:name="cs.hku.comp7506.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_navigation_home_to_createFragment"
             app:destination="@id/createFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_poiFragment"
+            app:destination="@id/poiFragment">
+            <argument
+                android:name="poi"
+                app:argType="cs.hku.comp7506.model.Poi" />
+        </action>
     </fragment>
 
+    <fragment
+        android:id="@+id/poiFragment"
+        android:name="cs.hku.comp7506.ui.home.HomeFragment"
+        tools:layout="@layout/fragment_home">
+        <argument
+            android:name="poi"
+            app:argType="cs.hku.comp7506.model.Poi" />
+
+    </fragment>
     <fragment
         android:id="@+id/createFragment"
         android:name="cs.hku.comp7506.ui.create.CreateFragment"
@@ -22,7 +38,7 @@
     <fragment
         android:id="@+id/entryFragment"
         android:name="cs.hku.comp7506.ui.entry.EntryFragment"
-        android:label="EntryFragment" >
+        android:label="EntryFragment">
         <action
             android:id="@+id/action_entryFragment_to_navigation_home"
             app:destination="@id/navigation_home"

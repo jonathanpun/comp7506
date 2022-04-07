@@ -30,13 +30,14 @@ import java.util.*
 class FeedRepository(private val contentResolver: ContentResolver) {
     val db = FirebaseFirestore.getInstance()
     val fn = FirebaseFunctions.getInstance();
-    val storage:FirebaseStorage = FirebaseStorage.getInstance()
+    val storage: FirebaseStorage = FirebaseStorage.getInstance()
 
     init {
         //fn.useEmulator("10.0.2.2", 5001);
     }
-    suspend fun getFeed(): List<Feed>? {
-        return getFeedDocument().mapNotNull {
+
+    suspend fun getFeed(poiId: String?): List<Feed>? {
+        return getFeedDocument(poiId).mapNotNull {
             if (it == null)
                 return null
             val poi = it.getString("poi_id")?.let { getPoi(it) }
@@ -44,18 +45,25 @@ class FeedRepository(private val contentResolver: ContentResolver) {
         }
     }
 
-    suspend fun getFeedDocument(): List<DocumentSnapshot?> = suspendCoroutine { cont ->
-        db.collection("feed").orderBy("time", Query.Direction.DESCENDING)
-            .limit(10)
-            .get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    cont.resume(document.documents)
-                }
-            }.addOnFailureListener {
-                it.printStackTrace()
+    suspend fun getFeedDocument(poiId: String?): List<DocumentSnapshot?> =
+        suspendCoroutine { cont ->
+            db.collection("feed").let {
+                if (poiId != null)
+                    it.whereEqualTo("poi_id", poiId)
+                else
+                    it
             }
-    }
+                .orderBy("time", Query.Direction.DESCENDING)
+                .limit(10)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        cont.resume(document.documents)
+                    }
+                }.addOnFailureListener {
+                    it.printStackTrace()
+                }
+        }
 
     suspend fun getPoi(id: String): Poi? = suspendCoroutine { cont ->
         db.collection("poi").document(id)
