@@ -31,13 +31,14 @@ class FeedRepository(private val contentResolver: ContentResolver) {
     val db = FirebaseFirestore.getInstance()
     val fn = FirebaseFunctions.getInstance();
     val storage: FirebaseStorage = FirebaseStorage.getInstance()
+    var lastDoc: DocumentSnapshot? = null
 
     init {
         //fn.useEmulator("10.0.2.2", 5001);
     }
 
-    suspend fun getFeed(poiId: String?): List<Feed>? {
-        return getFeedDocument(poiId).mapNotNull {
+    suspend fun getFeed(refresh: Boolean, poiId: String?): List<Feed>? {
+        return getFeedDocument(refresh, poiId).mapNotNull {
             if (it == null)
                 return null
             val poi = it.getString("poi_id")?.let { getPoi(it) }
@@ -45,19 +46,25 @@ class FeedRepository(private val contentResolver: ContentResolver) {
         }
     }
 
-    suspend fun getFeedDocument(poiId: String?): List<DocumentSnapshot?> =
+    suspend fun getFeedDocument(refresh: Boolean, poiId: String?): List<DocumentSnapshot?> =
         suspendCoroutine { cont ->
             db.collection("feed").let {
                 if (poiId != null)
                     it.whereEqualTo("poi_id", poiId)
                 else
                     it
+            }.apply {
+                val lastDoc = lastDoc
+                if (!refresh && lastDoc != null)
+                    startAfter(lastDoc)
             }
                 .orderBy("time", Query.Direction.DESCENDING)
+
                 .limit(10)
                 .get()
                 .addOnSuccessListener { document ->
                     if (document != null) {
+                        lastDoc = document.documents.lastOrNull()
                         cont.resume(document.documents)
                     }
                 }.addOnFailureListener {

@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
@@ -62,12 +64,13 @@ class WatchlistFragment : Fragment() {
                 Modifier
                     .height(100.dp)
                     .fillMaxWidth()
-                    .background(color = Color.Red)
+                    .background(color = Color(0xFF015396))
             ) {
                 Text(
                     "WatchList", modifier = Modifier
-                        .padding(start = 16.dp, bottom = 16.dp)
-                        .align(Alignment.BottomStart)
+                        .padding(start = 24.dp, bottom = 24.dp)
+                        .align(Alignment.BottomStart),
+                    color = Color.White, fontSize = 36.sp
                 )
             }
             l.value.forEach { watchlist ->

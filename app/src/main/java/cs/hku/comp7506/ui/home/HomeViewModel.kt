@@ -23,8 +23,8 @@ class HomeViewModel(
     private val _title = MutableLiveData<String>()
     val title: LiveData<String> = _title
     private var loadFeedJob: Job? = null
-    private val _addVisibility: MutableLiveData<Boolean> = MutableLiveData()
-    val addVisibility: MutableLiveData<Boolean> = _addVisibility
+    private val _addVisibility: MutableLiveData<Poi?> = MutableLiveData()
+    val addVisibility: MutableLiveData<Poi?> = _addVisibility
 
     init {
         loadMoreFeed()
@@ -33,7 +33,7 @@ class HomeViewModel(
             "poi" -> "#${poi?.name}"
             else -> ""
         }
-        _addVisibility.value = type == "main"
+        _addVisibility.value = poi
     }
 
 
@@ -41,12 +41,19 @@ class HomeViewModel(
         if (loadFeedJob !=null)
             return
         loadFeedJob = viewModelScope.launch {
-            _feed.value = LoadState.Loading(_feed.value?.data?: emptyList())
-            val feed = feedRepository.getFeed(poi?.id)
+            _feed.value = LoadState.Loading(_feed.value?.data ?: emptyList())
+            val feed =
+                feedRepository.getFeed(refresh = _feed.value?.data?.isEmpty() ?: true, poi?.id)
             _feed.value = LoadState.Success(_feed.value?.data?.toMutableList()?.apply {
                 feed?.let { addAll(it) }
             } as List<Feed>)
             loadFeedJob = null
         }
+    }
+
+    fun refresh() {
+        loadFeedJob?.cancel()
+        _feed.value = LoadState.Loading(emptyList())
+        loadMoreFeed()
     }
 }
