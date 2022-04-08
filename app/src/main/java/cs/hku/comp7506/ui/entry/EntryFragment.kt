@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.messaging.FirebaseMessaging
 import cs.hku.comp7506.databinding.FragmentEntryBinding
 import cs.hku.comp7506.util.NavDirection
 import kotlinx.coroutines.flow.collect
