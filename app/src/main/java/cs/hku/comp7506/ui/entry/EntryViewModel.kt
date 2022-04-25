@@ -7,15 +7,27 @@ import cs.hku.comp7506.repository.LoginRepository
 import cs.hku.comp7506.util.NavDirection
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 class EntryViewModel(val loginRepository: LoginRepository):ViewModel() {
-    private val _nav:MutableStateFlow<NavDirection?> = MutableStateFlow(null)
-    val nav:Flow<NavDirection?> = _nav
-    fun init(){
+    private val _animatorFlow = MutableStateFlow(false)
+    private val _signInFlow = MutableStateFlow(false)
+    val nav: Flow<NavDirection?> = _animatorFlow.combine(_signInFlow) { a, b ->
+        if (a && b)
+            NavDirection.Direction(R.id.action_entryFragment_to_navigation_home)
+        else
+            null
+    }
+
+    fun init() {
         viewModelScope.launch {
             loginRepository.signIn()
-            _nav.emit(NavDirection.Direction(R.id.action_entryFragment_to_navigation_home))
+            _signInFlow.value = true
         }
+    }
+
+    fun animatorEnded() {
+        _animatorFlow.value = true
     }
 }

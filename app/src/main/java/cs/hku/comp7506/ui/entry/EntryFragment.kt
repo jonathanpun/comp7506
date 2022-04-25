@@ -1,5 +1,6 @@
 package cs.hku.comp7506.ui.entry
 
+import android.animation.Animator
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -36,6 +37,21 @@ class EntryFragment:Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentEntryBinding.inflate(inflater)
+        binding.lottieAnimationView.addAnimatorListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(p0: Animator?) {
+            }
+
+            override fun onAnimationEnd(p0: Animator?) {
+                vm.animatorEnded()
+            }
+
+            override fun onAnimationCancel(p0: Animator?) {
+            }
+
+            override fun onAnimationRepeat(p0: Animator?) {
+            }
+        })
+
         return binding.root
     }
 }

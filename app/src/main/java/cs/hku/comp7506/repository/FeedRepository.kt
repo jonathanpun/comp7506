@@ -82,8 +82,8 @@ class FeedRepository(private val contentResolver: ContentResolver) {
     suspend fun getNearestPoi(lat:Double,lng: Double):PoiNNResponse? = suspendCoroutine { cont->
         fn.getHttpsCallable("nearestpoi").call(
             mapOf(
-                "lat" to lat,
-                "lon" to lng
+                "lat" to "22.373957736600694",
+                "lon" to "114.17719798312167"
             )
         ).continueWith{
             val response= Gson().fromJson(it.result.data.toString(),PoiNNResponse::class.java)
