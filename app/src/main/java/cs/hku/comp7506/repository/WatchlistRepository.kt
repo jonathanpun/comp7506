@@ -23,23 +23,44 @@ class WatchlistRepository {
 
     suspend fun getWatchList():List<KeyWatch>{
 
-        val docs = suspendCoroutine<List<DocumentSnapshot>> {cont->
-            db.collection("user/${auth.currentUser?.uid}/watchlist").limit(10).get().addOnSuccessListener {
+        val docs = suspendCoroutine<List<DocumentSnapshot>> { cont ->
+            db.collection("user/${auth.currentUser?.uid}/watchlist").limit(10).get()
+                .addOnSuccessListener {
                     cont.resume(it.documents)
-            }.addOnFailureListener {
+                }.addOnFailureListener {
                 it.printStackTrace()
             }
         }
-       return docs.mapNotNull {
-            when(it.getString("type")){
-                "poi"->{
-                    getPoi(it.getString("poi_id")?:"")?.let{
-                        KeyWatch.PoiWatch(it)
+        return docs.mapNotNull { doc ->
+            when (doc.getString("type")) {
+                "poi" -> {
+                    getPoi(doc.getString("poi_id") ?: "")?.let {
+                        KeyWatch.PoiWatch(doc.id, it)
                     }
                 }
-                else->null
+                else -> null
             }
         }
 
+    }
+
+    suspend fun addToWatchList(poi: Poi) = suspendCoroutine<Unit> { cont ->
+        db.collection("user/${auth.currentUser?.uid}/watchlist")
+            .add(mapOf("poi_id" to poi.id, "type" to "poi")).addOnSuccessListener {
+            db.collection("watchlist/poi/${poi.id}").document("${auth.currentUser?.uid}")
+                .set(mapOf("from" to "user")).addOnSuccessListener {
+                cont.resume(Unit)
+            }
+        }
+    }
+
+    suspend fun removeWatchList(poi: KeyWatch.PoiWatch) = suspendCoroutine<Unit> { cont ->
+        db.collection("user/${auth.currentUser?.uid}/watchlist").document(poi.id).delete()
+            .addOnSuccessListener {
+                db.collection("watchlist/poi/${poi.id}").document("${auth.currentUser?.uid}")
+                    .delete().addOnSuccessListener {
+                    cont.resume(Unit)
+                }
+            }
     }
 }

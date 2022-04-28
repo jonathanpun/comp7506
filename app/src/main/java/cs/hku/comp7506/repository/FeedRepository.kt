@@ -79,14 +79,21 @@ class FeedRepository(private val contentResolver: ContentResolver) {
             }
     }
 
-    suspend fun getNearestPoi(lat:Double,lng: Double):PoiNNResponse? = suspendCoroutine { cont->
+    suspend fun searchPoi(query: String): List<Poi> = suspendCoroutine { cont ->
+        db.collection("poi").orderBy("name").startAt(query).endAt("$query~").get()
+            .addOnSuccessListener {
+                cont.resume(it.documents.mapNotNull { PoiConverter.fromSnapshot(it) })
+            }
+    }
+
+    suspend fun getNearestPoi(lat: Double, lng: Double): PoiNNResponse? = suspendCoroutine { cont ->
         fn.getHttpsCallable("nearestpoi").call(
             mapOf(
                 "lat" to "22.373957736600694",
                 "lon" to "114.17719798312167"
             )
-        ).continueWith{
-            val response= Gson().fromJson(it.result.data.toString(),PoiNNResponse::class.java)
+        ).continueWith {
+            val response = Gson().fromJson(it.result.data.toString(), PoiNNResponse::class.java)
             cont.resume(response)
         }
     }

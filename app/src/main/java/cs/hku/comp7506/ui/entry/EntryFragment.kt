@@ -21,10 +21,11 @@ class EntryFragment:Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vm.init()
+        vm.animatorEnded()
         lifecycleScope.launchWhenCreated {
             vm.nav.collect {
-                when(it){
-                    is NavDirection.Direction->{
+                when (it) {
+                    is NavDirection.Direction -> {
                         findNavController().navigate(it.id)
                     }
                 }
@@ -42,7 +43,7 @@ class EntryFragment:Fragment() {
             }
 
             override fun onAnimationEnd(p0: Animator?) {
-                vm.animatorEnded()
+                //vm.animatorEnded()
             }
 
             override fun onAnimationCancel(p0: Animator?) {
